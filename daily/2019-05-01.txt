@@ -1,0 +1,39 @@
+es数据盘扩容
+
+挂载云盘
+https://help.aliyun.com/document_detail/25446.html?spm=a2c4g.11186623.2.12.7d897386McO04s#concept-llz-b4c-ydb
+
+
+Linux 格式化数据盘
+https://help.aliyun.com/document_detail/25426.html?spm=a2c4g.11186623.2.12.7a444b4184OvzX#concept-jl1-qzd-wdb
+
+数据盘扩容
+https://help.aliyun.com/document_detail/35095.html?spm=a2c4g.11186623.6.684.1bb51291k4wy3T
+
+df  -T -h
+
+
+fdisk -l
+dev=/dev/vdb
+mount=/data
+fdisk -u $dev
+n p 回车回车回车  p  w
+
+fdisk -lu $dev
+mkdir -p $mount
+cp /etc/fstab /etc/fstab.bak
+echo $dev $mount  ext4 defaults 0 0 >> /etc/fstab
+mkfs.ext4 $dev
+mount $dev $mount
+df -h $mount
+
+esVolumePath=/data/kubernetes/17zwd/elasticsearch-onekey/data
+mkdir -p $esVolumePath
+sudo chmod 775 $esVolumePath -R
+chown 1000:0 $esVolumePath -R
+ls -n $esVolumePath/..
+
+
+注意，data目录会被移动到esVolumePath
+cp  /root/kubernetes/17zwd/elasticsearch-onekey/data/nodes  $esVolumePath/ -ar
+ 
